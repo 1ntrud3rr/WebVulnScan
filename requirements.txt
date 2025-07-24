@@ -1,2 +1,5 @@
 requests
-python-nmap
+colorama
+tqdm
+pytest
+subprocess

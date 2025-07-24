@@ -1,21 +1,44 @@
 import requests
+import threading
+import time
 
-# A small default wordlist
-wordlist = ["admin", "login", "dashboard", "config", "uploads", "backup", "test", "panel"]
+def scan(domain, delay=0, wordlist_path=None, threads=10):
+    discovered_paths = []
+    lock = threading.Lock()
 
-def scan(domain):
-    found = []
-    base_url = f"http://{domain}"  # or https, can make this dynamic later
+    if wordlist_path:
+        try:
+            with open(wordlist_path, 'r') as file:
+                paths = [line.strip() for line in file if line.strip()]
+        except Exception as e:
+            return f"[ERROR] Failed to load wordlist: {e}"
+    else:
+        paths = ["admin", "login", "dashboard", "config", "upload", "server-status"]
 
-    for word in wordlist:
-        url = f"{base_url}/{word}"
+    def worker(path):
+        url = f"http://{domain}/{path}"
         try:
             response = requests.get(url, timeout=5)
             if response.status_code in [200, 301, 302]:
-                found.append(f"[+] Found: {url} (Status: {response.status_code})")
+                with lock:
+                    discovered_paths.append(f"{url} [{response.status_code}]")
         except requests.RequestException:
-            continue
+            pass
+        time.sleep(delay)
 
-    if not found:
-        return "No common directories found.\n"
-    return "\n".join(found)
+    threads_list = []
+    for path in paths:
+        t = threading.Thread(target=worker, args=(path,))
+        threads_list.append(t)
+        t.start()
+        if len(threads_list) >= threads:
+            for t in threads_list:
+                t.join()
+            threads_list = []
+
+    for t in threads_list:
+        t.join()
+
+    if discovered_paths:
+        return "\n".join(discovered_paths)
+    return "No directories discovered."

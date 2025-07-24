@@ -1,55 +1,88 @@
-# WebVulnScan 🕵️‍♂️
+# WebVulnScan
 
-A simple, modular website vulnerability scanner built with Python. Enter a domain and automatically scan for common vulnerabilities, misconfigurations, and subdomains.
+**A powerful and modular web vulnerability scanner built in Python.**
+
+![Banner](https://github.com/aryanh4cks/WebVulnScan/assets/banner.png)
+
+## 🔥 Features
+
+- 🔍 Port scanning
+- 🧠 CMS detection
+- 🗂️ Directory bruteforcing with threading
+- 🛡️ Header security checks
+- 🌐 Subdomain enumeration
+- 🚨 Known vulnerability detection
+- ⚙️ Nmap integration
+- 🧱 WAF detection
+- 📄 Multi-format output (TXT/JSON/CSV)
+- ⚡ Threading, delays & verbosity options
+- 🧪 Test mode & auto-preview support
 
 ---
 
-## ⚙️ Features
+## 📦 Installation
 
-- 🔍 Port Scanning (via Nmap)
-- 🧠 CMS Detection (via WhatWeb)
-- 📁 Directory Bruteforcing
-- 🛡️ HTTP Header Security Check
-- 🌐 Subdomain Enumeration
-- 🚨 Placeholder for CVE/Exploit detection
-
----
-
-## 🛠️ Requirements
-
-### Python Modules:
-Install Python requirements with:
 ```bash
+# Clone the repository
+https://github.com/aryanh4cks/WebVulnScan.git
+cd WebVulnScan
+
+# Install Python dependencies
 pip install -r requirements.txt
-
-System Dependencies:
-
-Install system tools:
-
-sudo apt update
-sudo apt install nmap whatweb
-
+```
 
 ---
 
-🚀 Usage
+## 🚀 Usage
 
-python3 main.py --domain example.com
+```bash
+python3 main.py --domain example.com \
+                --format json \
+                --verbose \
+                --delay 0.2 \
+                --threads 15 \
+                --open
+```
 
-Report saved to:
-
-output/scan_report_example.com.txt
-
+### ✅ Test Mode
+```bash
+python3 main.py --test
+```
+Runs all modules against `example.com` to verify functionality.
 
 ---
 
-⚠️ Legal Disclaimer
-
-This tool is for educational purposes only. Do not use it on websites without proper authorization. You are solely responsible for its usage.
-
+## 📁 Output
+- Reports are saved under the `output/` folder.
+- File name format: `scan_report_<domain>.<format>`
+- Formats: `.txt`, `.json`, `.csv`
 
 ---
 
-👤 Author
+## 🛠 Modules Overview
+- `port_scan`: Open port and service enumeration
+- `dir_brute`: Threaded brute-forcing of directories
+- `cms_detect`: CMS and fingerprint detection
+- `headers_check`: Identifies missing security headers
+- `subdomains`: Subdomain brute-force discovery
+- `vuln_scan`: Detects known/basic vulnerability signatures
 
-Aryan H4cks – GitHub: @aryanh4cks
+---
+
+## 🧪 Testing
+Run all modules with pytest:
+```bash
+pytest test_webvulnscan.py
+```
+
+---
+
+## 📜 License
+MIT License
+
+---
+
+## 👤 Author
+**[@aryanh4cks](https://github.com/aryanh4cks)**
+
+> Built with ❤️ for ethical hacking and security research.
